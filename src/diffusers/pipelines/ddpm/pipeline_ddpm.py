@@ -42,7 +42,7 @@ class DDPMPipeline(DiffusionPipeline):
         self,
         batch_size: int = 1,
         generator: Optional[torch.Generator] = None,
-        output_type: Optional[str] = "pil",
+        output_type: Optional[str] = "np.array",
         return_dict: bool = True,
         **kwargs,
     ) -> Union[ImagePipelineOutput, Tuple]:
