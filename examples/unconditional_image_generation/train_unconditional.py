@@ -177,7 +177,8 @@ def main(args):
                 images = pipeline(generator=generator, batch_size=args.eval_batch_size, output_type="numpy").images
 
                 # denormalize the images and save to tensorboard
-                images_processed = (images * 255).round().astype("uint8")
+                #images_processed = (images * 255).round().astype("uint8")
+                images_processed = images
                 accelerator.trackers[0].writer.add_images(
                     "test_samples", images_processed.transpose(0, 3, 1, 2), epoch
                 )
