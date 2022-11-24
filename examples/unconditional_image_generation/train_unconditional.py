@@ -36,29 +36,35 @@ def main(args):
         logging_dir=logging_dir,
     )
 
-    model = UNet2DModel(
-        sample_size=args.resolution,
-        in_channels=3,
-        out_channels=3,
-        layers_per_block=2,
-        block_out_channels=(128, 128, 256, 256, 512, 512),
-        down_block_types=(
-            "DownBlock2D",
-            "DownBlock2D",
-            "DownBlock2D",
-            "DownBlock2D",
-            "AttnDownBlock2D",
-            "DownBlock2D",
-        ),
-        up_block_types=(
-            "UpBlock2D",
-            "AttnUpBlock2D",
-            "UpBlock2D",
-            "UpBlock2D",
-            "UpBlock2D",
-            "UpBlock2D",
-        ),
-    )
+
+    if args.overwrite_output_dir:  # I add this line to resume training from checkpoint
+        model = UNet2DModel(
+            sample_size=args.resolution,
+            in_channels=3,
+            out_channels=3,
+            layers_per_block=2,
+            block_out_channels=(128, 128, 256, 256, 512, 512),
+            down_block_types=(
+                "DownBlock2D",
+                "DownBlock2D",
+                "DownBlock2D",
+                "DownBlock2D",
+                "AttnDownBlock2D",
+                "DownBlock2D",
+            ),
+            up_block_types=(
+                "UpBlock2D",
+                "AttnUpBlock2D",
+                "UpBlock2D",
+                "UpBlock2D",
+                "UpBlock2D",
+                "UpBlock2D",
+            ),
+        )
+    else: # I add this line
+        model_dir = args.output_dir + '/unet/'  # I add this line
+        model = UNet2DModel.from_pretrained(model_dir)  # I add this line
+
     noise_scheduler = DDPMScheduler(num_train_timesteps=1000)
     optimizer = torch.optim.AdamW(
         model.parameters(),
