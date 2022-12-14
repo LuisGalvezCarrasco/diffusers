@@ -82,7 +82,7 @@ class DDPMPipeline(DiffusionPipeline):
             # 2. compute previous image: x_t -> t_t-1
             image = self.scheduler.step(model_output, t, image, generator=generator).prev_sample
 
-        image = (image / 2 + 0.5).clamp(0, 1)
+        #image = (image / 2 + 0.5).clamp(0, 1) # luis: comento el clamp() esto porque cambia todos los valores menores a 0 por 0, cambia todos los valores mayores a 1 por 1 y cualquier valor entre 0 y 1 permanece intacto 
         image = image.cpu().permute(0, 2, 3, 1).numpy()
         if output_type == "pil":
             image = self.numpy_to_pil(image)
