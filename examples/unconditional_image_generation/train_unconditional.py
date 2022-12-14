@@ -76,11 +76,12 @@ def main(args):
 
     augmentations = Compose(
         [
-            Resize(args.resolution, interpolation=InterpolationMode.BILINEAR),
-            CenterCrop(args.resolution),
-            RandomHorizontalFlip(),
-            ToTensor(),
-            Normalize([0.5], [0.5]),
+            #Resize(args.resolution, interpolation=InterpolationMode.BILINEAR), #lossy technique (it's better cropping which is actually done)
+            #CenterCrop(args.resolution), (already done in this dataset)
+            #RandomHorizontalFlip(),  #classical data augmentation
+            ToTensor(), #necesary for train
+            #Normalize([0.5], [0.5]),
+            ConvertImageDtype(dtype=torch.float),
         ]
     )
 
